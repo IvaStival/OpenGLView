@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>simple.vert</file>
+        <file>simple.frag</file>
+        <file>main.cpp</file>
+        <file>openglmainwindow.cpp</file>
+        <file>openglmainwindow.h</file>
+        <file>openglview.cpp</file>
+        <file>openglview.h</file>
+    </qresource>
+</RCC>
