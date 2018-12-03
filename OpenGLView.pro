@@ -36,7 +36,9 @@ SOURCES += \
 HEADERS += \
         openglmainwindow.h \
     openglview.h \
-    vertex.h
+    vertex.h \
+    vector3d.h \
+    vertex3d.h
 
 FORMS += \
         openglmainwindow.ui

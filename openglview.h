@@ -8,6 +8,7 @@
 #include <QOpenGLShaderProgram>
 #include <QString>
 #include <QtDebug>
+#include "vector3d.h"
 
 class QOpenGLShaderProgram;
 
@@ -15,6 +16,7 @@ class OpenGLView : public QOpenGLWidget, QOpenGLFunctions
 {
     Q_OBJECT
 public:
+
     QOpenGLBuffer vertexBufferObject;                                             // Usado para alocar a memoria utilizada na GPU.
                                                                                   // Essa classe é que gerencia esse processo, com ela podemos
                                                                                   // especificar o espaço a ser utilizado e instanciar os valores de cada buffer.
