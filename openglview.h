@@ -8,7 +8,9 @@
 #include <QOpenGLShaderProgram>
 #include <QString>
 #include <QtDebug>
-#include "vector3d.h"
+#include "Primitivies/shadergenerator.h"
+
+#include <iostream>
 
 class QOpenGLShaderProgram;
 

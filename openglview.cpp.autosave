@@ -101,7 +101,6 @@ void OpenGLView::paintGL(){
         uniform_color_id = this->program->uniformLocation("uniformValue");
         printDebug(uniform_color_id);
 
-
         this->program->setUniformValue(uniform_color_id, vt);
 
         // DRAW AS TRIANGLES

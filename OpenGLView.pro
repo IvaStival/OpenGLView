@@ -28,17 +28,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
+
 SOURCES += \
         main.cpp \
         openglmainwindow.cpp \
-    openglview.cpp
+    openglview.cpp \
+    Primitivies/shaderdata.cpp \
+    Primitivies/shadergenerator.cpp
 
 HEADERS += \
         openglmainwindow.h \
     openglview.h \
-    vertex.h \
-    vector3d.h \
-    vertex3d.h
+    Math \
+    Primitivies \
+    Math/vector3d.h \
+    Primitivies/vertex.h \
+    Primitivies/shaderdata.h \
+    Math/vector3d.h \
+    Primitivies/shaderdata.h \
+    Primitivies/vertex.h \
+    Primitivies/shadergenerator.h
 
 FORMS += \
         openglmainwindow.ui
