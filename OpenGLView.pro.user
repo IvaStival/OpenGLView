@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.7.1, 2018-12-03T11:08:39. -->
+<!-- Written by QtCreator 4.7.1, 2018-12-05T18:25:15. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -313,7 +313,7 @@
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.CommandLineArguments"></value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">OpenGLView.pro</value>
     <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.UserWorkingDirectory.default">/Users/ivastival/OneDrive/Documentos/Studies/QT/OpenGL/build-OpenGLView-Desktop_Qt_5_10_1_clang_64bit-Debug</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.UserWorkingDirectory.default">/Users/ivastival/OneDrive/Documentos/Studies/QT/OpenGL/build-OpenGLView-Desktop_Qt_5_10_1_clang_64bit-Debug/OpenGLView.app/Contents/MacOS</value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>

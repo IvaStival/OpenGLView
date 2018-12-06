@@ -2,13 +2,12 @@
 #include "ui_openglmainwindow.h"
 
 OpenGlMainWindow::OpenGlMainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::OpenGlMainWindow)
+    QMainWindow(parent)
 {
-    ui->setupUi(this);
+//    ui->setupUi(this);
+    this->setCentralWidget(new OpenGLView(this));
 }
 
 OpenGlMainWindow::~OpenGlMainWindow()
 {
-    delete ui;
 }

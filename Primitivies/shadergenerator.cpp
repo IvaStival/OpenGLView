@@ -1,4 +1,4 @@
-#include "shadergenerator.h"
+#include "shaderGenerator.h"
 #include <iostream>
 
 ShaderGenerator::ShaderGenerator(){}

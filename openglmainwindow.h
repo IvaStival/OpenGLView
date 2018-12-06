@@ -2,6 +2,7 @@
 #define OPENGLMAINWINDOW_H
 
 #include <QMainWindow>
+#include "openglview.h"
 
 namespace Ui {
 class OpenGlMainWindow;
@@ -15,8 +16,8 @@ public:
     explicit OpenGlMainWindow(QWidget *parent = nullptr);
     ~OpenGlMainWindow();
 
-private:
-    Ui::OpenGlMainWindow *ui;
+//private:
+//    Ui::OpenGlMainWindow *ui;
 };
 
 #endif // OPENGLMAINWINDOW_H

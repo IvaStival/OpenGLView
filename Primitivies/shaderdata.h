@@ -8,7 +8,9 @@ class Vertex;
 class ShaderData{
 public:
     Vertex* vertices;
+    ushort* index;
     int numVertices;
+    int numIndex;
     int positionSize;
     int colorSize;
     int positionOffSet;
@@ -18,6 +20,7 @@ public:
     ShaderData();
 
     int verticesBufferSize() const;
+    int indexBufferSize() const;
     void cleanUp();
 
 };
