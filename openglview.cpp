@@ -24,8 +24,9 @@ void OpenGLView::initializeGL(){
     initializeOpenGLFunctions();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-//        glEnable( GL_CULL_FACE | GL_DEPTH_TEST);
-     glEnable(GL_DEPTH_TEST);
+    // GL_CULL_FACE(0x0B44) AND GL_DEPTH_TEST(0x0B71) ARE NOT FLAGS THEN THEY NEED TO BE CALLED SEPERATLY
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
 
 
     {
@@ -99,6 +100,7 @@ void OpenGLView::initializeGL(){
                 std::cout <<*version<<std::endl ;
 
         shader->cleanUp();
+        // WE CAN CLENUP BECAUSE THE INFO IS ON GPU RAM
     }
     this->printDebug("Criando nova cor!");
 
@@ -123,21 +125,36 @@ void OpenGLView::paintGL(){
 
         // UNIFORM TEST
 //        QVector4D vt(0.0f,0.0f,1.0f,1.0f);
+        // PROJECTION * TRANSLATE * ROTATE
         PerspectiveMatrix persp;
         QMatrix4x4 projectionMatrix = persp.perspective(60.0f, ((float)width())/height(), 0.1f, 10.0f);
-        QMatrix4x4 worldMatrix;
-        worldMatrix.translate(0.0f, 0.0f, -5.0f);
+        QMatrix4x4 translate;
+        translate.translate(-1.0f, 0.0f, -3.0f);
+        QMatrix4x4 rotate;
+        rotate.rotate(36, QVector3D(1,0,0));
 
         int world_matrix_id = this->program->uniformLocation("worldMatrix");
         int projection_id = this->program->uniformLocation("projection");
-//        printDebug(uniform_color_id);
 
-        this->program->setUniformValue(world_matrix_id, worldMatrix);
+        this->program->setUniformValue(world_matrix_id, translate*rotate);
         this->program->setUniformValue(projection_id, projectionMatrix);
 
         // DRAW AS TRIANGLES
 //        glDrawArrays(GL_TRIANGLES, 0, numVerticerToDraw);                         // glDrawArrays(MODE, FIRST, VERTICE_SIZE)
         glDrawElements(GL_TRIANGLE_STRIP, numIndexToDraw, GL_UNSIGNED_SHORT, 0);
+
+        QMatrix4x4 translate2;
+        translate2.translate(1.0f, 0.0f, -3.75f);
+        QMatrix4x4 rotate2;
+        rotate2.rotate(126, QVector3D(0,1,0));
+
+        this->program->setUniformValue(world_matrix_id, translate2*rotate2);
+        this->program->setUniformValue(projection_id, projectionMatrix);
+
+        // DRAW AS TRIANGLES
+//        glDrawArrays(GL_TRIANGLES, 0, numVerticerToDraw);                         // glDrawArrays(MODE, FIRST, VERTICE_SIZE)
+        glDrawElements(GL_TRIANGLE_STRIP, numIndexToDraw, GL_UNSIGNED_SHORT, 0);
+
 
         // RELEASE ALL
         this->vertexArrayObject.release();
