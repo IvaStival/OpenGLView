@@ -8,6 +8,10 @@
 
 
 QT += widgets
+#TARGET = OpenGLView
+#CONFIG += console
+#CONFIG -= app_bundle
+#TEMPLATE = app
 
 CONFIG += c++11
 
