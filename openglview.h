@@ -27,7 +27,9 @@ public:
                                                                                   // especificar o espaço a ser utilizado e instanciar os valores de cada buffer.
     QOpenGLBuffer indexVertexBufferObject;
 
-    QOpenGLBuffer instanced;
+//    QOpenGLBuffer instanced;
+
+    QOpenGLBuffer instancingCubes;
 
     QOpenGLVertexArrayObject vertexArrayObject;                                   // Um Vertex Array Object é simplesmente um objeto armazenado na GPU que controla todos
                                                                                   // os buffers e vincula informações associadas a uma chamada de desenho.

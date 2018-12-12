@@ -43,6 +43,24 @@ CubeShader::CubeShader(){
             20, 22, 23,20, 22, 21,  // Bottom
 
         };
+//    ushort indices[] = {
+//            0,   1,  2,  0,  2,  3, // Top
+//            4,   6,  5,  4,  7,  6, // Front
+//            8,   10, 9,  8, 11, 10, // Right
+//            12, 14, 13, 12, 15, 14, // Left
+//            16, 17, 18, 16, 18, 19, // Back
+//            20, 23, 22,20, 22, 21,  // Bottom
+
+//        };
+//        ushort indices[] = {
+//                0,   2,  1,  0,  3,  2, // Top
+//                4,   6,  5,  4,  7,  6, // Front
+//                8,   10, 9,  8, 11, 10, // Right
+//                12, 14, 13, 12, 15, 14, // Left
+//                16, 17, 18, 16, 18, 19, // Back
+//                20, 23, 22,20, 22, 21,  // Bottom
+
+//            };
 
     this->numVertices = sizeof (verts) / sizeof(verts[0]);
     this->vertices = new Vertex[this->numVertices];
