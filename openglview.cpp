@@ -1,20 +1,22 @@
 #include "openglview.h"
-#include "Primitivies/vertex.h"
-#include "Math/perspectivematrix.h"
-#include <QOpenGLShaderProgram>
-#include <QVector4D>
-
 
 float inst[] = {-0.5f, 0.0f, 0.5f};
 
 OpenGLView::OpenGLView(QWidget * parent) : QOpenGLWidget(parent), indexVertexBufferObject(QOpenGLBuffer::IndexBuffer), instancingCubes(QOpenGLBuffer::VertexBuffer){
     bool m_core = QSurfaceFormat::defaultFormat().profile() == QSurfaceFormat::CoreProfile;
+    this->alt_pressed = false;
+    this->rigth_mouse = false;
 
-    std::cout<<m_core<<std::endl;
+    camera = new Camera();
+//    std::cout<<m_core<<std::endl;
+    this->setFocusPolicy ( Qt::StrongFocus );
+
 
 }
 
-OpenGLView::~OpenGLView(){}
+OpenGLView::~OpenGLView(){
+    delete camera;
+}
 
 int numVerticerToDraw = 0;
 int numIndexToDraw = 0;
@@ -103,33 +105,35 @@ void OpenGLView::initializeGL(){
 
         // INSTANCING
         // CREATE TRANSFORM MATRIX
-        PerspectiveMatrix persp;
-        QMatrix4x4 projectionMatrix = persp.perspective(60.0f, ((float)width())/height(), 0.1f, 10.0f);
-        QMatrix4x4 transform1, transform2;
-        QMatrix4x4 rotate;
+//        PerspectiveMatrix persp;
+//        QMatrix4x4 projectionMatrix = persp.perspective(60.0f, ((float)width())/height(), 0.1f, 10.0f);
+//        QMatrix4x4 transform1, transform2;
+//        QMatrix4x4 rotate;
 
-        transform1.setToIdentity();
-        transform2.setToIdentity();
+//        transform1.setToIdentity();
+//        transform2.setToIdentity();
 
-        transform1.translate(-1.0f, 0.0f, -3.0f);
-        transform1.rotate(36, QVector3D(1,0,0));
+//        transform1.translate(-1.0f, 0.0f, -3.0f);
+//        transform1.rotate(36, QVector3D(1,0,0));
 
-        transform2.translate(1.0f,0.0f,-3.75f);
-        transform2.rotate(126, QVector3D(0,1,0));
+//        transform2.translate(1.0f,0.0f,-3.75f);
+//        transform2.rotate(126, QVector3D(0,1,0));
 
-        QMatrix4x4 fullTransform[] = {
-            projectionMatrix * transform1,
-            projectionMatrix * transform2
-            };
 
-        int id = this->program->attributeLocation("fullTransform");
+//        QMatrix4x4 fullTransform[] = {
+//            projectionMatrix * transform1,
+//            projectionMatrix * transform2
+//            };
+
+
+
 
         // INSTANCING SHADER TRANSFORMS
         this->instancingCubes.create();
-        this->instancingCubes.setUsagePattern(QOpenGLBuffer::StaticDraw);
+        this->instancingCubes.setUsagePattern(QOpenGLBuffer::DynamicDraw);
         this->instancingCubes.bind();
 
-        this->instancingCubes.allocate(fullTransform, sizeof(fullTransform));
+//        this->instancingCubes.allocate(fullTransform, sizeof(fullTransform));
 
         // SET ATTRIBUTE BUFFER TO INTERPRETER CORRECTLY THE MATRIX, WE NEED TO CREATE THIS BECAUSE THE GPU READ 4 VECTORS NOT 1 4x4 MATRIX
 
@@ -147,6 +151,9 @@ void OpenGLView::initializeGL(){
 //                glVertexAttribDivisor(3,1);
 //                glVertexAttribDivisor(4,1);
 //                glVertexAttribDivisor(5,1);
+
+        // GET THE SHADER VAR ID fullTransform
+        int id = this->program->attributeLocation("fullTransform");
 
         for( int i = 0; i < 4; ++i){
             this->program->setAttributeBuffer(id+i, GL_FLOAT, sizeof(GL_FLOAT)*i*4, 4, sizeof(QMatrix4x4));
@@ -182,7 +189,30 @@ void OpenGLView::resizeGL(int width, int height){
 void OpenGLView::paintGL(){
     // CLEAR COLOR BUFFER TO ENABLE UPDATE REDRAW COLOR
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    glViewport(0,0,width(), height());
+
+
+    // INSTANCING
+    // CREATE TRANSFORM MATRIX
+    PerspectiveMatrix persp;
+    QMatrix4x4 projectionMatrix = persp.perspective(60.0f, ((float)width())/height(), 0.1f, 10.0f);
+    QMatrix4x4 transform1, transform2;
+
+    transform1.setToIdentity();
+    transform2.setToIdentity();
+
+    transform1.translate(-1.0f, 0.0f, -3.0f);
+    transform1.rotate(36, QVector3D(1,0,0));
+
+    transform2.translate(1.0f,0.0f,-3.75f);
+    transform2.rotate(126, QVector3D(0,1,0));
+
+
+    QMatrix4x4 temp = camera->getModelToView();
+
+    QMatrix4x4 fullTransform[] = {
+        projectionMatrix * temp * transform1,
+        projectionMatrix * temp * transform2
+        };
 
 
     // BIND TO THIS PROGRAM
@@ -191,6 +221,13 @@ void OpenGLView::paintGL(){
         // BIND TO THIS VERTEX ARRAY OBJECT
         this->vertexArrayObject.bind();             // VAO
         this->indexVertexBufferObject.bind();       // INDEX BUFFER
+
+        this->instancingCubes.bind();
+
+        this->instancingCubes.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+
+
+        this->instancingCubes.allocate(fullTransform, sizeof(fullTransform));
 
 
 //        // PROJECTION * TRANSLATE * ROTATE
@@ -230,6 +267,61 @@ void OpenGLView::teardownGL(){
     this->vertexBufferObject.destroy();
     this->vertexArrayObject.destroy();
     delete this->program;
+}
+
+
+// MOUSE EVENTS
+// MOVE
+// HERE THE ROTATE AND ZOOM CAMERA OCCOURS, IS A ALT KEY IS PRESSED AND THE RIGHT MOUSE BUTTON IS PRESSED THE ZOOM ACCOURS
+// ELSE THE ROTATE OCCOURS
+void OpenGLView::mouseMoveEvent(QMouseEvent* e){
+
+    if(!this->alt_pressed){
+        camera->mouseRotateUpdate(QVector2D(e->x(), e->y()));
+    }
+    else{
+       if(this->rigth_mouse){
+            camera->mouseZoomUpdate(QVector2D(e->x(), e->y()));
+        }
+       else{
+           camera->mouseRotateUpdate(QVector2D(e->x(), e->y()));
+       }
+    }
+    repaint();
+}
+
+// MOUSE PRESS BUTTON
+// HERE WHEN THE RIGHT MOUSE BUTTON IS PRESSED AND THE ALT KEY IS PRESSED CHANGE THE BOOL VARIABLE right_mouse TO TRUE ELSE CHANGE TO FALSE
+// AFTER UPDATE THE CLICKED POSITION AS THE CURRENT OLD POSITION ON CAMERA
+void OpenGLView::mousePressEvent(QMouseEvent* e){
+
+    if(this->alt_pressed){
+        if(e->button() == Qt::RightButton){
+            this->rigth_mouse = true;
+        }
+        else{
+            this->rigth_mouse = false;
+        }
+    }
+    camera->mousePressUpdate(QVector2D(e->x(), e->y()));
+
+}
+
+// KEYBOARD EVENTS
+// KEY PRESS
+// HERE WHEN PRESS ALT KEY CHANGE THE BOOL VARIABLE TO TRUE, THAT IS USED ON MOUSE PRESS AND MOVE EVENT
+void OpenGLView::keyPressEvent(QKeyEvent* e){
+    if(e->key() == Qt::Key_Alt){
+        this->alt_pressed = true;
+    }
+}
+
+// KEY RELEASE
+// CHANGE THE ALT BOOL VARIABLE TO FALSE
+void OpenGLView::keyReleaseEvent(QKeyEvent* e){
+    if(e->key() == Qt::Key_Alt){
+        this->alt_pressed = false;
+    }
 }
 
 void OpenGLView::printDebug(QString to_print){

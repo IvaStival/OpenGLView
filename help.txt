@@ -30,3 +30,14 @@ git remote -v
 git push -u origin master
 (IF NOT WORK USE THE -f TO FORCE - git push -f origin master)
 == # Pushes the changes in your local repository up to the remote repository you specified as the origin
+
+
+Biografia:
+
+OpenGL:
+https://www.youtube.com/watch?v=6c1QYZAEP2M&list=PLRwVmtr-pp06qT6ckboaOhnm9FxmzHpbY
+
+Instancing Render
+ https://learnopengl.com/Advanced-OpenGL/Instancing
+ http://www.informit.com/articles/article.aspx?p=2033340&seqNum=5
+ https://stackoverflow.com/questions/23732001/how-to-use-vaos-with-instancing-in-qt-5

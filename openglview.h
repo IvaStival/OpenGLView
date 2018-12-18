@@ -6,12 +6,17 @@
 #include <QOpenGLBuffer>
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLShaderProgram>
+#include <QVector4D>
+#include <QMouseEvent>
 #include <QString>
 #include <QtDebug>
 #include "Math/perspectivematrix.h"
 #include "Primitivies/triangleshader.h"
 #include "Primitivies/cubeshader.h"
-#include <glm.h>
+#include "Primitivies/vertex.h"
+#include "Math/perspectivematrix.h"
+#include "Math/camera.h"
+
 
 #include <iostream>
 
@@ -20,7 +25,8 @@ class QOpenGLShaderProgram;
 class OpenGLView : public QOpenGLWidget, QOpenGLFunctions
 {
     Q_OBJECT
-public:
+
+private:
     QMatrix4x4 persp;
     QOpenGLBuffer vertexBufferObject;                                             // Usado para alocar a memoria utilizada na GPU.
                                                                                   // Essa classe é que gerencia esse processo, com ela podemos
@@ -40,18 +46,31 @@ public:
                                                                                   // Resumidamente VertexShader é quem pode manipular atributos do vertice
                                                                                   // FragmentShader é responsavel por como os pixels entre os vertices aparecem, é parte da
                                                                                   // da Rasterização.
+    Camera* camera;
+    bool alt_pressed, rigth_mouse;
 
 
-    explicit OpenGLView(QWidget *parent = 0);
-    ~OpenGLView();
+    void printDebug(QString to_print);
+    void printDebug(int to_print);
+protected:
 
     void initializeGL();
     void resizeGL(int width, int hegth);
     void paintGL();
     void teardownGL();
-private:
-    void printDebug(QString to_print);
-    void printDebug(int to_print);
+
+    void mouseMoveEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void keyPressEvent(QKeyEvent* event);
+    void keyReleaseEvent(QKeyEvent* event);
+public:
+
+
+
+    explicit OpenGLView(QWidget *parent = 0);
+    ~OpenGLView();
+
+
 };
 
 #endif // OPENGLVIEW_H
