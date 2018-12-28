@@ -3,8 +3,10 @@
 #include <QSurfaceFormat>
 #include <QTransform>
 #include <QVector3D>
-#include <QMatrix3x3>
+#include <QMatrix4x4>
+#include <vector>
 
+using namespace std;
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +26,6 @@ int main(int argc, char *argv[])
     w.show();
 
     return a.exec();
-
 
 
 }

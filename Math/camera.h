@@ -34,6 +34,9 @@ public:
     QMatrix4x4 getModelToViewLookAt() const;
     QMatrix4x4 getModelToView() const;
 
+    // MUTATORS
+    QVector2D getXY();
+
 };
 
 #endif // CAMERA_H

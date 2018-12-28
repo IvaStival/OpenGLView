@@ -1,8 +1,10 @@
 #include "camera.h"
 #include <math.h>
 
-Camera::Camera() : view(0.0f, 0.0f, -1.0f) ,position(2.0,2.0,2.0), theta(0.0f), phi( 3.14f / 2.0f), center(0.0f,0.0f,-3.0f), up(0.0f, 1.0f, 0.0f), radius(5.0f){
+Camera::Camera() : view(0.0f, 0.0f, -1.0f) ,position(2.0,2.0,2.0), theta(0.0f), phi( 3.14f / 2.0f), center(0.0f,0.0f,-3.0f), up(0.0f, 1.0f, 0.0f), radius(10.0f){
     this->up_change = false;
+    this->theta = -45.0f;
+    this->phi = 30.0f;
 }
 
 
@@ -33,7 +35,6 @@ void Camera::mouseRotateUpdate(const QVector2D newPos){
     QVector2D delta = newPos - this->oldPosition;
     float step = 3.0f;
 
-
     this->theta += (newPos.x()-this->oldPosition.x()) * 0.3f;
     this->phi   += (newPos.y()-this->oldPosition.y()) * 0.3f;
 
@@ -50,6 +51,7 @@ void Camera::mouseZoomUpdate(const QVector2D newPos){
     this->oldPosition = newPos;
 }
 
+
 QMatrix4x4 Camera::getModelToViewLookAt() const{
     QMatrix4x4 result;
 
@@ -64,14 +66,11 @@ QMatrix4x4 Camera::getModelToViewLookAt() const{
 //    result.lookAt(this->position, QVector3D(0.0f, 0.0f, -3.0f), this->up);
     result.lookAt(QVector3D(eyeX, eyeY, eyeZ), this->center, this->up);
 
-
     return result;
 }
 
-
 QMatrix4x4 Camera::getModelToView() const{
     QMatrix4x4 result;
-
 
     result.setToIdentity();
     result.translate(0.0f, 0.0f, -radius);
@@ -80,4 +79,9 @@ QMatrix4x4 Camera::getModelToView() const{
     result.translate(-this->center.x(), -this->center.y(), -this->center.z());
 
     return result;
+}
+
+
+QVector2D Camera::getXY(){
+    return QVector2D(this->theta, this->phi);
 }

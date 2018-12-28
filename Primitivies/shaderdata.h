@@ -21,6 +21,7 @@ public:
 
     int verticesBufferSize() const;
     int indexBufferSize() const;
+
     void cleanUp();
 
 };

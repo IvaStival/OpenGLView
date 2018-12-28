@@ -25,7 +25,10 @@ SOURCES += \
     Primitivies/cubeshader.cpp \
     Math/transform3d.cpp \
     Math/perspectivematrix.cpp \
-    Math/camera.cpp
+    Math/camera.cpp \
+    Primitivies/axisShader.cpp \
+    Math/orthomatrix.cpp \
+    Primitivies/gridshader.cpp
 
 HEADERS += \
         openglmainwindow.h \
@@ -43,7 +46,10 @@ HEADERS += \
     Primitivies/cubeshader.h \
     Math/transform3d.h \
     Math/perspectivematrix.h \
-    Math/camera.h
+    Math/camera.h \
+    Primitivies/axisShader.h \
+    Math/orthomatrix.h \
+    Primitivies/gridshader.h
 
 FORMS += \
         openglmainwindow.ui
