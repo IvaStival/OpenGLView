@@ -79,6 +79,7 @@ inline int Vertex::positionOffSet(){
     return offsetof(Vertex, position);
 }
 inline int Vertex::colorOffSet(){
+    std::cout<<offsetof(Vertex, color)<<std::endl;
     return offsetof(Vertex, color);
 }
 inline int Vertex::stride(){

@@ -1,7 +1,7 @@
 #ifndef TRIANGLESHADER_H
 #define TRIANGLESHADER_H
 
-#include "shaderdata.h"
+#include "shaderData.h"
 class TriangleShader : public ShaderData
 {
 public:

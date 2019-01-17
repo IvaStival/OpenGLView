@@ -5,26 +5,24 @@ scale -
 Rotacao - OK
 Translate - OK
 
-
 Projection - OK
-
 
 Camera:
 Zoom - Ok
 Rotate Around - Ok
 Perspective - Ok
-Ortho
+Ortho - Ok
 
 
 Axis:
-- Draw a 2D x, y and z lines and use ortho matrix
+- Draw a 2D x, y and z lines and use ortho matrix - Ok
 
 
 Math:
-- Develop a ortho matrix
+- Develop a ortho matrix - Ok
 
 
-Rotação da camera (lookAt) - Implementation Ok, but need to enable on OpenGL
+Rotação da camera (lookAt) - Implementation Ok, but need to enable on Project
 Translate de Camera -
 
 
@@ -33,6 +31,6 @@ Adicionar objetos a cena dinamicamente
 
 
 DOC:
-- Terminar topico sobre camera;
-- Falar sobre desenhar objetos diferentes - ex: Axis (linhas x,y e z) e Objetos;
--
+- Terminar topico sobre camera; - Ok
+- Falar sobre desenhar objetos diferentes - ex: Axis (linhas x, y e z) e Objetos; -Ok
+- Desenhar Grid

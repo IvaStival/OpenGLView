@@ -1,4 +1,4 @@
-#include "shaderdata.h"
+#include "shaderData.h"
 
 ShaderData::ShaderData() : vertices(nullptr), numVertices(0), positionSize(0), colorSize(0), stride(0){}
 

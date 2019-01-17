@@ -94,7 +94,7 @@ void OpenGLView::sendToOpenGLCubeShader(){
                                                                                                                     // 3 - tuple size
                                                                                                                     // 24 - stride (sizeof(GL_FLOAT) * 6) - 6 = 3vertices + 3colors, go to the next vertice
 
-
+        
         // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
         // THIS FIRST IS TO READ VERTICES INFO
         this->program->setAttributeBuffer(1, GL_FLOAT, shader->colorOffset, shader->colorSize, shader->stride);     // 1 - id

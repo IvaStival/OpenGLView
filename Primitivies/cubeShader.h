@@ -1,7 +1,7 @@
 #ifndef CUBESHADER_H
 #define CUBESHADER_H
 
-#include "shaderdata.h"
+#include "shaderData.h"
 
 class CubeShader : public ShaderData{
 public:

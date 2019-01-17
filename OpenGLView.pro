@@ -19,16 +19,17 @@ SOURCES += \
         main.cpp \
         openglmainwindow.cpp \
     openglview.cpp \
-    Primitivies/shaderdata.cpp \
-    Primitivies/shadergenerator.cpp \
-    Primitivies/triangleshader.cpp \
-    Primitivies/cubeshader.cpp \
     Math/transform3d.cpp \
     Math/perspectivematrix.cpp \
     Math/camera.cpp \
     Primitivies/axisShader.cpp \
     Math/orthomatrix.cpp \
-    Primitivies/gridshader.cpp
+    Primitivies/arrowShader.cpp \
+    Primitivies/cubeShader.cpp \
+    Primitivies/gridShader.cpp \
+    Primitivies/shaderData.cpp \
+    Primitivies/shaderGenerator.cpp \
+    Primitivies/triangleShader.cpp
 
 HEADERS += \
         openglmainwindow.h \
@@ -37,19 +38,19 @@ HEADERS += \
     Primitivies \
     Math/vector3d.h \
     Primitivies/vertex.h \
-    Primitivies/shaderdata.h \
     Math/vector3d.h \
-    Primitivies/shaderdata.h \
     Primitivies/vertex.h \
     Primitivies/shaderGenerator.h \
-    Primitivies/triangleshader.h \
-    Primitivies/cubeshader.h \
     Math/transform3d.h \
     Math/perspectivematrix.h \
     Math/camera.h \
     Primitivies/axisShader.h \
     Math/orthomatrix.h \
-    Primitivies/gridshader.h
+    Primitivies/arrowShader.h \
+    Primitivies/cubeShader.h \
+    Primitivies/gridShader.h \
+    Primitivies/shaderData.h \
+    Primitivies/triangleShader.h
 
 FORMS += \
         openglmainwindow.ui

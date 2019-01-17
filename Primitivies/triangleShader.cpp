@@ -1,4 +1,4 @@
-#include "triangleshader.h"
+#include "triangleShader.h"
 
 TriangleShader::TriangleShader()
 {

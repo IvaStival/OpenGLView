@@ -1,4 +1,4 @@
-#include "cubeshader.h"
+#include "cubeShader.h"
 
 CubeShader::CubeShader(){
 

@@ -16,9 +16,11 @@
 #include <QMatrix4x4>
 
 #include "Math/perspectivematrix.h"
-#include "Primitivies/triangleshader.h"
-#include "Primitivies/cubeshader.h"
+#include "Primitivies/triangleShader.h"
+#include "Primitivies/cubeShader.h"
 #include "Primitivies/axisShader.h"
+#include "Primitivies/gridShader.h"
+#include "Primitivies/arrowshader.h"
 #include "Primitivies/vertex.h"
 #include "Math/perspectivematrix.h"
 #include "Math/camera.h"
@@ -33,16 +35,20 @@ class OpenGLView : public QOpenGLWidget, QOpenGLFunctions
 
 private:
     QMatrix4x4 persp;
+    QOpenGLBuffer vertexGridBufferObject;
     QOpenGLBuffer vertexOrthoBufferObject;
     QOpenGLBuffer vertexBufferObject;                                             // Usado para alocar a memoria utilizada na GPU.
                                                                                   // Essa classe é que gerencia esse processo, com ela podemos
                                                                                   // especificar o espaço a ser utilizado e instanciar os valores de cada buffer.
+    QOpenGLBuffer indexGridVertexBufferObject;
     QOpenGLBuffer indexOrthoVertexBufferObject;
     QOpenGLBuffer indexVertexBufferObject;
 
+    QOpenGLBuffer fullGridTransformBuffer;
     QOpenGLBuffer fullTransformBuffer;
     QOpenGLBuffer fullOrthoTransformBuffer;
 
+    QOpenGLVertexArrayObject vertexArrayGridObject;
     QOpenGLVertexArrayObject vertexArrayAxisObject;
     QOpenGLVertexArrayObject vertexArrayObject;                                   // Um Vertex Array Object é simplesmente um objeto armazenado na GPU que controla todos
                                                                                   // os buffers e vincula informações associadas a uma chamada de desenho.
@@ -78,6 +84,7 @@ public:
 
     void sendToOpenGLCubeShader();
     void sendToOpenGLAxisShader();
+    void sendToOpenGLGridShader();
     QMatrix4x4 fullPerspectiveMatrix(const QVector3D& translate, const float& angle, const QVector3D& axis) const;
     QMatrix4x4 fullOrthoMatrix(const QVector3D& translate, const float& angle, const QVector3D& axis) const;
 

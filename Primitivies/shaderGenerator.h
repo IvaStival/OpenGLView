@@ -1,7 +1,7 @@
 #ifndef SHADERGENERATOR_H
 #define SHADERGENERATOR_H
 
-#include "shaderdata.h"
+#include "shaderData.h"
 
 class ShaderGenerator{
 public:

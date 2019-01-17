@@ -1,12 +1,12 @@
 #ifndef GRIDSHADER_H
 #define GRIDSHADER_H
 #include "Math/vector3d.h"
-#include "shaderdata.h"
+#include "shaderData.h"
 
-class gridShader : public ShaderData
+class GridShader : public ShaderData
 {
 public:
-    gridShader();
+    GridShader();
 };
 
 #endif // GRIDSHADER_H

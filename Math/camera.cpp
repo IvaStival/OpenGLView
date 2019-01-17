@@ -1,7 +1,7 @@
 #include "camera.h"
 #include <math.h>
 
-Camera::Camera() : view(0.0f, 0.0f, -1.0f) ,position(2.0,2.0,2.0), theta(0.0f), phi( 3.14f / 2.0f), center(0.0f,0.0f,-3.0f), up(0.0f, 1.0f, 0.0f), radius(10.0f){
+Camera::Camera() : view(0.0f, 0.0f, -1.0f) ,position(2.0,2.0,2.0), theta(0.0f), phi( 3.14f / 2.0f), center(0.0f,0.0f,0.0f), up(0.0f, 1.0f, 0.0f), radius(25.0f){
     this->up_change = false;
     this->theta = -45.0f;
     this->phi = 30.0f;
