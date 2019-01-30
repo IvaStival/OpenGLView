@@ -55,9 +55,9 @@ inline float Vector3D::getZ(){ return this->z; };
 inline float Vector3D::getW(){ return this->w; };
 
 inline void Vector3D::setX(float n_x) { this->x = n_x;}
-inline void Vector3D::setY(float n_y) { this->x = n_y;}
-inline void Vector3D::setZ(float n_z) { this->x = n_z;}
-inline void Vector3D::setW(float n_w) { this->x = n_w;}
+inline void Vector3D::setY(float n_y) { this->y = n_y;}
+inline void Vector3D::setZ(float n_z) { this->z = n_z;}
+inline void Vector3D::setW(float n_w) { this->w = n_w;}
 
 
 inline Vector3D& Vector3D::operator+(float scalar)  const{

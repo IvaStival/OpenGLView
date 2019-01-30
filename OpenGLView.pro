@@ -29,7 +29,8 @@ SOURCES += \
     Primitivies/gridShader.cpp \
     Primitivies/shaderData.cpp \
     Primitivies/shaderGenerator.cpp \
-    Primitivies/triangleShader.cpp
+    Primitivies/triangleShader.cpp \
+    Primitivies/sphereShader.cpp
 
 HEADERS += \
         openglmainwindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
     Primitivies/cubeShader.h \
     Primitivies/gridShader.h \
     Primitivies/shaderData.h \
-    Primitivies/triangleShader.h
+    Primitivies/triangleShader.h \
+    Primitivies/sphereShader.h
 
 FORMS += \
         openglmainwindow.ui

@@ -5,12 +5,12 @@
 #include <QVector3D>
 #include <QMatrix4x4>
 #include <vector>
+#include "Primitivies/vertex.h"
 
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-
     QApplication a(argc, argv);
 
     QSurfaceFormat format;
@@ -26,6 +26,5 @@ int main(int argc, char *argv[])
     w.show();
 
     return a.exec();
-
 
 }

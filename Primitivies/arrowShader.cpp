@@ -101,6 +101,7 @@ ArrowShader::ArrowShader(){
 
     this->positionOffSet = Vertex::positionOffSet();
     this->colorOffset = Vertex::colorOffSet();
+    this->normal();
 
 
 }

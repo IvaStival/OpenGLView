@@ -18,6 +18,7 @@
 #include "Math/perspectivematrix.h"
 #include "Primitivies/triangleShader.h"
 #include "Primitivies/cubeShader.h"
+#include "Primitivies/sphereShader.h"
 #include "Primitivies/axisShader.h"
 #include "Primitivies/gridShader.h"
 #include "Primitivies/arrowshader.h"
@@ -53,7 +54,15 @@ private:
     QOpenGLVertexArrayObject vertexArrayObject;                                   // Um Vertex Array Object é simplesmente um objeto armazenado na GPU que controla todos
                                                                                   // os buffers e vincula informações associadas a uma chamada de desenho.
 
-    QOpenGLShaderProgram* program;                                                // Shader program permite é a parte do codigo que é executada em GPU
+    // ---------- IMPLEMENTATION OF THE TWO GEOMETRIES ON THE SAME BUFFER ------------
+    QOpenGLVertexArrayObject vertexArrayCube;
+    QOpenGLVertexArrayObject vertexArrayNormalCube;
+    QOpenGLVertexArrayObject vertexArrayArrow;
+    QOpenGLVertexArrayObject vertexArraySphere;
+    // -------------------------------------------------------------------------------
+
+
+    QOpenGLShaderProgram* program;                                                // Shader program é a parte do codigo que é executada em GPU
                                                                                   // São usados arquivos que usam a linguagem de programação GLSL, de inicio usaremos 2
                                                                                   // arquivos, um chamado VertexShader e outro FragmentShader.
                                                                                   // Resumidamente VertexShader é quem pode manipular atributos do vertice
@@ -62,16 +71,28 @@ private:
     Camera* camera;
     vector<QMatrix4x4> fullTransform;
     bool alt_pressed, ctrl_pressed, rigth_mouse;
+    // ---------- IMPLEMENTATION OF THE TWO GEOMETRIES ON THE SAME BUFFER ------------
+    int numCubeVertices;
+    int numArrowVertices;
+    int numSphereVertices;
+    int numCubeIndex;
+    int numCubeNormalVertices;
+    int numCubeNormalIndex;
+    int numArrowIndex;
+    int numSphereIndex;
+    int arrowIndexByteOffset;
+    int sphereIndexByteOffset;
+    int cubeNormalIndexByteOffset;
+
+    // -------------------------------------------------------------------------------
 
 
     void printDebug(QString to_print);
     void printDebug(int to_print);
 protected:
-
     void initializeGL();
     void resizeGL(int width, int hegth);
     void paintGL();
-//    void teardownGL();
 
     void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent(QMouseEvent* event);
@@ -83,11 +104,12 @@ public:
     ~OpenGLView();
 
     void sendToOpenGLCubeShader();
+    void sendToOpenGLSphereShader();
     void sendToOpenGLAxisShader();
     void sendToOpenGLGridShader();
+    void sendToOpenGL3DShader();
     QMatrix4x4 fullPerspectiveMatrix(const QVector3D& translate, const float& angle, const QVector3D& axis) const;
     QMatrix4x4 fullOrthoMatrix(const QVector3D& translate, const float& angle, const QVector3D& axis) const;
-
 
 };
 

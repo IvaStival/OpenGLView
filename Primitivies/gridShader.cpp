@@ -194,34 +194,6 @@ GridShader::GridShader()
 
     };
 
-//    const int vectorSize = (size*2*2*2)+4;
-//    Vertex* verts= new Vertex[vectorSize];
-//    int indices[vectorSize];
-
-//    int count = 0;
-//    for(int i=-size; i<=size; ++i, count++){
-//        verts[count] = Vertex(i, 0.0f, size, color);
-//        verts[++count] = Vertex(i, 0.0f, -size, color);
-//    }
-
-////    ++count;
-////    std::cout<<std::endl;
-////    std::cout<<std::endl;
-//    for(int i=-size ; i<=size; ++i, count++){
-//        verts[count] = Vertex(size, 0.0f, i, color);
-//        verts[++count] = Vertex(-size, 0.0f, i, color);
-//    }
-
-//    for(int i=0; i< vectorSize; ++i){
-//        indices[i] = i;
-////        std::cout<<i<<std::endl;
-//    }
-
-//    for(int i=0; i<vectorSize; ++i){
-//        std::cout << verts[i].getPosition();
-//        std::cout << indices[i]<<std::endl;
-//    }
-
     this->numVertices = sizeof (verts) / sizeof(verts[0]);
     this->vertices = new Vertex[this->numVertices];
     memcpy(this->vertices, verts, sizeof(verts));

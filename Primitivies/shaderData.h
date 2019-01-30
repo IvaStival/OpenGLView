@@ -2,6 +2,9 @@
 #define SHADERDATA_H
 
 #include "vertex.h"
+#include "Math/vector3d.h"
+#include "math.h"
+#include <QVector3D>
 
 class Vertex;
 
@@ -21,6 +24,9 @@ public:
 
     int verticesBufferSize() const;
     int indexBufferSize() const;
+
+    void normal();
+    ShaderData& generateNormal() const;
 
     void cleanUp();
 
