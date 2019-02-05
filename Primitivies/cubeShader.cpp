@@ -2,37 +2,73 @@
 
 CubeShader::CubeShader(){
 
+
+    Vector3D color(0.564, 0.905, 0.435);
+
+//    Vertex verts[] = {
+//            Vertex(-1.0f, +1.0f, +1.0f, +1.0f, +0.0f, +0.0f),
+//            Vertex(+1.0f, +1.0f, +1.0f, +0.0f, +1.0f, +0.0f),
+//            Vertex(+1.0f, +1.0f, -1.0f, +0.0f, +0.0f, +1.0f),
+//            Vertex(-1.0f, +1.0f, -1.0f, +1.0f, +1.0f, +1.0f),
+
+//            Vertex(-1.0f, +1.0f, -1.0f, +1.0f, +0.0f, +1.0f),
+//            Vertex(+1.0f, +1.0f, -1.0f, +0.0f, +0.5f, +0.2f),
+//            Vertex(+1.0f, -1.0f, -1.0f, +0.8f, +0.6f, +0.4f),
+//            Vertex(-1.0f, -1.0f, -1.0f, +0.3f, +1.0f, +0.5f),
+
+//            Vertex(+1.0f, +1.0f, -1.0f, +0.2f, +0.5f, +0.2f),
+//            Vertex(+1.0f, +1.0f, +1.0f, +0.9f, +0.3f, +0.7f),
+//            Vertex(+1.0f, -1.0f, +1.0f, +0.3f, +0.7f, +0.5f),
+//            Vertex(+1.0f, -1.0f, -1.0f, +0.5f, +0.7f, +0.5f),
+
+//            Vertex(-1.0f, +1.0f, +1.0f, +0.7f, +0.8f, +0.2f),
+//            Vertex(-1.0f, +1.0f, -1.0f, +0.5f, +0.7f, +0.3f),
+//            Vertex(-1.0f, -1.0f, -1.0f, +0.4f, +0.7f, +0.7f),
+//            Vertex(-1.0f, -1.0f, +1.0f, +0.2f, +0.5f, +1.0f),
+
+//            Vertex(+1.0f, +1.0f, +1.0f, +0.6f, +1.0f, +0.7f),
+//            Vertex(-1.0f, +1.0f, +1.0f, +0.6f, +0.4f, +0.8f),
+//            Vertex(-1.0f, -1.0f, +1.0f, +0.2f, +0.8f, +0.7f),
+//            Vertex(+1.0f, -1.0f, +1.0f, +0.2f, +0.7f, +1.0f),
+
+//            Vertex(+1.0f, -1.0f, -1.0f, +0.8f, +0.3f, +0.7f),
+//            Vertex(-1.0f, -1.0f, -1.0f, +0.8f, +0.9f, +0.5f),
+//            Vertex(-1.0f, -1.0f, +1.0f, +0.5f, +0.8f, +0.5f),
+//            Vertex(+1.0f, -1.0f, +1.0f, +0.9f, +1.0f, +0.2f)
+//        };
+
     Vertex verts[] = {
-            Vertex(-1.0f, +1.0f, +1.0f, +1.0f, +0.0f, +0.0f),
-            Vertex(+1.0f, +1.0f, +1.0f, +0.0f, +1.0f, +0.0f),
-            Vertex(+1.0f, +1.0f, -1.0f, +0.0f, +0.0f, +1.0f),
-            Vertex(-1.0f, +1.0f, -1.0f, +1.0f, +1.0f, +1.0f),
+            Vertex(-1.0f, +1.0f, +1.0f, color),
+            Vertex(+1.0f, +1.0f, +1.0f, color),
+            Vertex(+1.0f, +1.0f, -1.0f, color),
+            Vertex(-1.0f, +1.0f, -1.0f, color),
 
-            Vertex(-1.0f, +1.0f, -1.0f, +1.0f, +0.0f, +1.0f),
-            Vertex(+1.0f, +1.0f, -1.0f, +0.0f, +0.5f, +0.2f),
-            Vertex(+1.0f, -1.0f, -1.0f, +0.8f, +0.6f, +0.4f),
-            Vertex(-1.0f, -1.0f, -1.0f, +0.3f, +1.0f, +0.5f),
+            Vertex(-1.0f, +1.0f, -1.0f, color),
+            Vertex(+1.0f, +1.0f, -1.0f, color),
+            Vertex(+1.0f, -1.0f, -1.0f, color),
+            Vertex(-1.0f, -1.0f, -1.0f, color),
 
-            Vertex(+1.0f, +1.0f, -1.0f, +0.2f, +0.5f, +0.2f),
-            Vertex(+1.0f, +1.0f, +1.0f, +0.9f, +0.3f, +0.7f),
-            Vertex(+1.0f, -1.0f, +1.0f, +0.3f, +0.7f, +0.5f),
-            Vertex(+1.0f, -1.0f, -1.0f, +0.5f, +0.7f, +0.5f),
+            Vertex(+1.0f, +1.0f, -1.0f, color),
+            Vertex(+1.0f, +1.0f, +1.0f, color),
+            Vertex(+1.0f, -1.0f, +1.0f, color),
+            Vertex(+1.0f, -1.0f, -1.0f, color),
 
-            Vertex(-1.0f, +1.0f, +1.0f, +0.7f, +0.8f, +0.2f),
-            Vertex(-1.0f, +1.0f, -1.0f, +0.5f, +0.7f, +0.3f),
-            Vertex(-1.0f, -1.0f, -1.0f, +0.4f, +0.7f, +0.7f),
-            Vertex(-1.0f, -1.0f, +1.0f, +0.2f, +0.5f, +1.0f),
+            Vertex(-1.0f, +1.0f, +1.0f, color),
+            Vertex(-1.0f, +1.0f, -1.0f, color),
+            Vertex(-1.0f, -1.0f, -1.0f, color),
+            Vertex(-1.0f, -1.0f, +1.0f, color),
 
-            Vertex(+1.0f, +1.0f, +1.0f, +0.6f, +1.0f, +0.7f),
-            Vertex(-1.0f, +1.0f, +1.0f, +0.6f, +0.4f, +0.8f),
-            Vertex(-1.0f, -1.0f, +1.0f, +0.2f, +0.8f, +0.7f),
-            Vertex(+1.0f, -1.0f, +1.0f, +0.2f, +0.7f, +1.0f),
+            Vertex(+1.0f, +1.0f, +1.0f, color),
+            Vertex(-1.0f, +1.0f, +1.0f, color),
+            Vertex(-1.0f, -1.0f, +1.0f, color),
+            Vertex(+1.0f, -1.0f, +1.0f, color),
 
-            Vertex(+1.0f, -1.0f, -1.0f, +0.8f, +0.3f, +0.7f),
-            Vertex(-1.0f, -1.0f, -1.0f, +0.8f, +0.9f, +0.5f),
-            Vertex(-1.0f, -1.0f, +1.0f, +0.5f, +0.8f, +0.5f),
-            Vertex(+1.0f, -1.0f, +1.0f, +0.9f, +1.0f, +0.2f)
+            Vertex(+1.0f, -1.0f, -1.0f, color),
+            Vertex(-1.0f, -1.0f, -1.0f, color),
+            Vertex(-1.0f, -1.0f, +1.0f, color),
+            Vertex(+1.0f, -1.0f, +1.0f, color)
         };
+
 
 
     ushort indices[] = {
@@ -55,10 +91,12 @@ CubeShader::CubeShader(){
 
     this->positionSize = Vertex::positionSize;
     this->colorSize = Vertex::colorSize;
+    this->normalSize = Vertex::normalSize;
     this->stride = Vertex::stride();
 
     this->positionOffSet = Vertex::positionOffSet();
     this->colorOffset = Vertex::colorOffSet();
+    this->normalOffset = Vertex::normalOffSet();
     this->normal();
 
 };

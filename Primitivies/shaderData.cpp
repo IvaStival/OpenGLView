@@ -76,7 +76,7 @@ ShaderData& ShaderData::generateNormal() const{
         Vertex& p2 = result.vertices[index+1];
 
         p1.setPosition(v);
-        p2.setPosition(n);
+        p2.setPosition(v+n);
         p1.setColor(color);
         p2.setColor(color);
 

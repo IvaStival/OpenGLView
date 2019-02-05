@@ -157,6 +157,85 @@ void OpenGLView::sendToOpenGLCubeShader(){
         delete shader;
 }
 
+//void OpenGLView::sendToOpenGLPlaneShader(){
+//        // CREATE AN OBJECT
+//        this->vertexArrayObject.create();
+//        // BIND AS CURRENT VERTEX ARRAY BUFFER
+//        this->vertexArrayObject.bind();
+
+//        ShaderData *shader =  new PlaneShader();
+//        ShaderData plane_normal = shader->generateNormal();
+//        numVerticesToDraw = shader->numVertices;
+//        numIndexToDraw = shader->numIndex;
+
+
+//        // CREATE A BUFFER
+//        this->vertexBufferObject.create();
+//        // BIND AS CURRENT VERTEX BUFFER OBJECT
+//        this->vertexBufferObject.bind();
+
+//        this->vertexBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);    // SET DRAW PATTERN AS STATIC
+//        this->vertexBufferObject.allocate(shader->vertices, shader->verticesBufferSize());                // ALOCATE verts ON GPU, USE YOUR SIZE
+
+
+//        // SET 0 TO VERTICES BUFFER
+//        this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
+//        // SET 1 TO COLORS VALUES
+//        this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+
+//        // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+//        // THIS FIRST IS TO READ VERTICES INFO
+//        this->program->setAttributeBuffer(0, GL_FLOAT, shader->positionOffSet,shader->positionSize,shader->stride); // 0 - id
+//                                                                                                                    // GL_FLOAT - Variable type
+//                                                                                                                    // 0 - offset
+//                                                                                                                    // 3 - tuple size
+//                                                                                                                    // 24 - stride (sizeof(GL_FLOAT) * 6) - 6 = 3vertices + 3colors, go to the next vertice
+
+
+//        // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+//        // THIS FIRST IS TO READ VERTICES INFO
+//        this->program->setAttributeBuffer(1, GL_FLOAT, shader->colorOffset, shader->colorSize, shader->stride);     // 1 - id
+//                                                                                                                    // GL_FLOAT - Variable type
+//                                                                                                                    // 12 - offset - (sizeof(GL_FLOAT) * 3 - (3 = vertices) (WHEN USE Vertex THE OFFSET IS 16 BECAUSE
+//                                                                                                                    //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
+//                                                                                                                    // 3 - tuple size
+//                                                                                                                    // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
+
+//        // RELEASE VERTEX BUFFER
+//        this->vertexBufferObject.release();
+
+//        // INDEX BUFFERS
+//        this->indexVertexBufferObject.create();
+//        this->indexVertexBufferObject.bind();
+//        this->indexVertexBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);    // SET DRAW PATTERN AS STATIC
+//        this->indexVertexBufferObject.allocate(shader->index, shader->indexBufferSize());
+//        this->indexVertexBufferObject.release();
+
+//        // INSTANCING SHADER TRANSFORMS
+//        this->fullTransformBuffer.create();
+//        this->fullTransformBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+//        this->fullTransformBuffer.bind();
+
+//        // SET ATTRIBUTE BUFFER TO INTERPRETER CORRECTLY THE MATRIX, WE NEED TO CREATE THIS BECAUSE THE GPU READ 4 VECTORS NOT 1 4x4 MATRIX
+//        // GET THE SHADER VAR ID fullTransform
+//        int id = this->program->attributeLocation("fullTransform");
+
+//        for( int i = 0; i < 4; ++i){
+//            this->program->setAttributeBuffer(id+i, GL_FLOAT, sizeof(GL_FLOAT)*i*4, 4, sizeof(QMatrix4x4));
+//            this->program->enableAttributeArray(id+i);
+//            glVertexAttribDivisor(id+i,1);
+//        }
+
+//        // RELEASE INSTANCING
+//        this->fullTransformBuffer.release();
+
+//        // WE CAN CLENUP BECAUSE THE INFO IS ON GPU RAM
+//        shader->cleanUp();
+//        this->vertexArrayObject.release();
+//        delete shader;
+//}
+
+
 void OpenGLView::sendToOpenGLSphereShader(){
         // CREATE AN OBJECT
         this->vertexArrayObject.create();
@@ -393,27 +472,45 @@ void OpenGLView::sendToOpenGL3DShader(){
     ShaderData *cube =  new CubeShader();
     ShaderData *arrow = new ArrowShader();
     ShaderData *sphere = new SphereShader();
+    ShaderData *plane = new PlaneShader();
     ShaderData cube_normal = cube->generateNormal();
+    ShaderData arrow_normal = arrow->generateNormal();
+    ShaderData sphere_normal = sphere->generateNormal();
+    ShaderData plane_normal = plane->generateNormal();
+
     // ------------------------------------------------
 
     // ----- SET THE NUMBER OF VERTICES AND INDEX -----
     this->numCubeVertices = cube->numVertices;
     this->numCubeIndex = cube->numIndex;
-    this->numCubeNormalVertices = cube_normal.numVertices;
-    this->numCubeNormalIndex = cube_normal.numIndex;
     this->numArrowVertices = arrow->numVertices;
     this->numArrowIndex = arrow->numIndex;
     this->numSphereVertices = sphere->numVertices;
     this->numSphereIndex = sphere->numIndex;
+    this->numPlaneVertices = plane->numVertices;
+    this->numPlaneIndex = plane->numIndex;
 
+    this->numCubeNormalVertices = cube_normal.numVertices;
+    this->numCubeNormalIndex = cube_normal.numIndex;
+    this->numArrowNormalVertices = arrow_normal.numVertices;
+    this->numArrowNormalIndex = arrow_normal.numIndex;
+    this->numSphereNormalVertices = sphere_normal.numVertices;
+    this->numSphereNormalIndex = sphere_normal.numIndex;
+    this->numPlaneNormalVertices = sphere_normal.numVertices;
+    this->numPlaneNormalIndex = plane_normal.numIndex;
     // ------------------------------------------------
 
 
     // ---------- CREATE THE VERTEX BUFFER ------------
     int cube_buffer_size = cube->verticesBufferSize();
-    int cube_normal_buffer_size = cube_normal.verticesBufferSize();
     int arrow_buffer_size = arrow->verticesBufferSize();
     int sphere_buffer_size = sphere->verticesBufferSize();
+    int plane_buffer_size = plane->verticesBufferSize();
+
+    int cube_normal_buffer_size = cube_normal.verticesBufferSize();
+    int arrow_normal_buffer_size = arrow_normal.verticesBufferSize();
+    int sphere_normal_buffer_size = sphere_normal.verticesBufferSize();
+    int plane_normal_buffer_size = plane_normal.verticesBufferSize();
 
     this->vertexBufferObject.create();
 
@@ -422,11 +519,15 @@ void OpenGLView::sendToOpenGL3DShader(){
     this->vertexBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);    // SET DRAW PATTERN AS STATIC
 
     // ALOCATE MEMORY AND ADD DATA TO IT
-    this->vertexBufferObject.allocate(cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size);
+    this->vertexBufferObject.allocate(cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_buffer_size + plane_buffer_size + plane_normal_buffer_size);
     this->vertexBufferObject.write(0, cube->vertices, cube_buffer_size);
     this->vertexBufferObject.write(cube_buffer_size, arrow->vertices, arrow_buffer_size);
     this->vertexBufferObject.write(cube_buffer_size + arrow_buffer_size, sphere->vertices, sphere_buffer_size);
     this->vertexBufferObject.write(cube_buffer_size + arrow_buffer_size + sphere_buffer_size, cube_normal.vertices, cube_normal_buffer_size);
+    this->vertexBufferObject.write(cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size, arrow_normal.vertices, arrow_normal_buffer_size);
+    this->vertexBufferObject.write(cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size, sphere_normal.vertices, sphere_normal_buffer_size);
+    this->vertexBufferObject.write(cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_buffer_size, plane->vertices, plane_buffer_size);
+    this->vertexBufferObject.write(cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_buffer_size + plane_buffer_size, plane_normal.vertices, plane_normal_buffer_size);
     this->vertexBufferObject.release();
     // ------------------------------------------------
 
@@ -435,16 +536,25 @@ void OpenGLView::sendToOpenGL3DShader(){
     int cube_index_buffer_size = cube->indexBufferSize();
     int arrow_index_buffer_size = arrow->indexBufferSize();
     int sphere_index_buffer_size = sphere->indexBufferSize();
+    int plane_index_buffer_size = plane->indexBufferSize();
+
     int cube_normal_index_buffer_size = cube_normal.indexBufferSize();
+    int arrow_normal_index_buffer_size = arrow_normal.indexBufferSize();
+    int sphere_normal_index_buffer_size = sphere_normal.indexBufferSize();
+    int plane_normal_index_buffer_size = plane_normal.indexBufferSize();
 
     this->indexVertexBufferObject.create();
     this->indexVertexBufferObject.bind();
     this->indexVertexBufferObject.setUsagePattern(QOpenGLBuffer::StaticDraw);    // SET DRAW PATTERN AS STATIC
-    this->indexVertexBufferObject.allocate(cube_index_buffer_size + arrow_index_buffer_size + sphere_index_buffer_size + cube_normal_index_buffer_size);
+    this->indexVertexBufferObject.allocate(cube_index_buffer_size + arrow_index_buffer_size + sphere_index_buffer_size + cube_normal_index_buffer_size + arrow_normal_index_buffer_size + sphere_normal_index_buffer_size + plane_buffer_size + plane_normal_buffer_size);
     this->indexVertexBufferObject.write(0, cube->index, cube_index_buffer_size);
     this->indexVertexBufferObject.write(cube_index_buffer_size, arrow->index, arrow_index_buffer_size);
     this->indexVertexBufferObject.write(cube_index_buffer_size + arrow_index_buffer_size, sphere->index, sphere_index_buffer_size);
     this->indexVertexBufferObject.write(cube_index_buffer_size + arrow_index_buffer_size + sphere_index_buffer_size, cube_normal.index, cube_normal_index_buffer_size);
+    this->indexVertexBufferObject.write(cube_index_buffer_size + arrow_index_buffer_size + sphere_index_buffer_size + cube_normal_index_buffer_size, arrow_normal.index, arrow_normal_index_buffer_size);
+    this->indexVertexBufferObject.write(cube_index_buffer_size + arrow_index_buffer_size + sphere_index_buffer_size + cube_normal_index_buffer_size + arrow_normal_index_buffer_size, sphere_normal.index, sphere_normal_index_buffer_size);
+    this->indexVertexBufferObject.write(cube_index_buffer_size + arrow_index_buffer_size + sphere_index_buffer_size + cube_normal_index_buffer_size + arrow_normal_index_buffer_size + sphere_normal_index_buffer_size, plane->index, plane_index_buffer_size);
+    this->indexVertexBufferObject.write(cube_index_buffer_size + arrow_index_buffer_size + sphere_index_buffer_size + cube_normal_index_buffer_size + arrow_normal_index_buffer_size + sphere_normal_index_buffer_size + plane_index_buffer_size, plane_normal.index, plane_normal_index_buffer_size);
     this->indexVertexBufferObject.release();
     // ------------------------------------------------
 
@@ -457,9 +567,14 @@ void OpenGLView::sendToOpenGL3DShader(){
     this->vertexArrayCube.create();
     this->vertexArrayArrow.create();
     this->vertexArraySphere.create();
+    this->vertexArrayPlane.create();
     this->vertexArrayNormalCube.create();
+    this->vertexArrayNormalArrow.create();
+    this->vertexArrayNormalSphere.create();
+    this->vertexArrayNormalPlane.create();
 
     // ---------------- CUBE ARRAY --------------------
+    {
     // BIND THE CUBE VERTEX ARRAY AS CURRENT
     this->vertexArrayCube.bind();
     this->vertexBufferObject.bind();
@@ -469,6 +584,9 @@ void OpenGLView::sendToOpenGL3DShader(){
     this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
     // SET 1 TO COLORS VALUES
     this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+    // SET 2 TO NORMALS VALUES
+    this->program->enableAttributeArray(2);                 // ENABLE id 2, THIS id WILL NORMAL ID
+
 
     // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
     // THIS FIRST IS TO READ VERTICES INFO
@@ -482,6 +600,14 @@ void OpenGLView::sendToOpenGL3DShader(){
     // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
     // THIS FIRST IS TO READ VERTICES INFO
     this->program->setAttributeBuffer(1, GL_FLOAT, cube->colorOffset, cube->colorSize, cube->stride);     // 1 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 16 - offset - (sizeof(GL_FLOAT) * 3 - (3 = vertices) (WHEN USE Vertex THE OFFSET IS 16 BECAUSE
+                                                                                                                //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
+    // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(2, GL_FLOAT, cube->normalOffset, cube->normalSize, cube->stride);     // 1 - id
                                                                                                                 // GL_FLOAT - Variable type
                                                                                                                 // 16 - offset - (sizeof(GL_FLOAT) * 3 - (3 = vertices) (WHEN USE Vertex THE OFFSET IS 16 BECAUSE
                                                                                                                 //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
@@ -503,10 +629,12 @@ void OpenGLView::sendToOpenGL3DShader(){
     // RELEASE INSTANCING
     this->fullTransformBuffer.release();
     this->vertexArrayCube.release();
+    }
     // ---------------------------------------------------
 
 
     // ----------------- ARROW ARRAY ---------------------
+    {
     // NOW BIND THE ARRAW VERTEX ARRAY AS CURRENT
     this->vertexArrayArrow.bind();
     this->vertexBufferObject.bind();
@@ -516,6 +644,8 @@ void OpenGLView::sendToOpenGL3DShader(){
     this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
     // SET 1 TO COLORS VALUES
     this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+    // SET 2 TO NORMALS VALUES
+    this->program->enableAttributeArray(2);                 // ENABLE id 1, THIS id WILL COLOR ID
 
     // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
     // THIS FIRST IS TO READ VERTICES INFO
@@ -533,7 +663,8 @@ void OpenGLView::sendToOpenGL3DShader(){
                                                                                                                 //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
                                                                                                                 // 3 - tuple size
                                                                                                                 // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
-
+    // NORMAL INSTATIATION
+    this->program->setAttributeBuffer(2, GL_FLOAT, cube_buffer_size + arrow->normalOffset, arrow->normalSize, arrow->stride);
 
     // ---------- BIND FULL TRANSFORM BUFFER -------------
     this->fullTransformBuffer.bind();
@@ -551,13 +682,14 @@ void OpenGLView::sendToOpenGL3DShader(){
     }
 
     this->vertexArrayArrow.release();
+    }
     // ---------------------------------------------------
 
     arrowIndexByteOffset = cube->indexBufferSize();
 
 
-
     // ----------------- SPHERE ARRAY ---------------------
+    {
     // NOW BIND THE ARRAW VERTEX ARRAY AS CURRENT
     this->vertexArraySphere.bind();
     this->vertexBufferObject.bind();
@@ -567,6 +699,8 @@ void OpenGLView::sendToOpenGL3DShader(){
     this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
     // SET 1 TO COLORS VALUES
     this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+    // SET 2 TO COLORS VALUES
+    this->program->enableAttributeArray(2);
 
     // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
     // THIS FIRST IS TO READ VERTICES INFO
@@ -585,6 +719,8 @@ void OpenGLView::sendToOpenGL3DShader(){
                                                                                                                 // 3 - tuple size
                                                                                                                 // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
 
+    this->program->setAttributeBuffer(2, GL_FLOAT, cube_buffer_size + arrow_buffer_size + sphere->normalOffset, sphere->normalSize, sphere->stride);     // 1 - id
+
 
     // ---------- BIND FULL TRANSFORM BUFFER -------------
     this->fullTransformBuffer.bind();
@@ -602,13 +738,14 @@ void OpenGLView::sendToOpenGL3DShader(){
     }
 
     this->vertexArraySphere.release();
+    }
     // ---------------------------------------------------
 
-    sphereIndexByteOffset = cube->indexBufferSize()+arrow->indexBufferSize();
-
+    sphereIndexByteOffset = arrowIndexByteOffset+arrow->indexBufferSize();
 
 
     // ----------------- CUBE NORMAL ARRAY ---------------------
+    {
     // NOW BIND THE ARRAW VERTEX ARRAY AS CURRENT
     this->vertexArrayNormalCube.bind();
     this->vertexBufferObject.bind();
@@ -653,9 +790,222 @@ void OpenGLView::sendToOpenGL3DShader(){
     }
 
     this->vertexArrayNormalCube.release();
+    }
     // ---------------------------------------------------
 
-    cubeNormalIndexByteOffset = cube->indexBufferSize() + arrow->indexBufferSize() + sphere->indexBufferSize();
+    cubeNormalIndexByteOffset = sphereIndexByteOffset + sphere->indexBufferSize();
+
+
+    // ----------------- ARROW NORMAL ARRAY ---------------------
+    {
+    // NOW BIND THE ARRAW VERTEX ARRAY AS CURRENT
+    this->vertexArrayNormalArrow.bind();
+    this->vertexBufferObject.bind();
+    this->indexVertexBufferObject.bind();
+
+    //SET 0 TO VERTICES BUFFER
+    this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
+    // SET 1 TO COLORS VALUES
+    this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+
+    // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(0, GL_FLOAT, arrow_normal.positionOffSet + arrow_buffer_size + cube_buffer_size + sphere_buffer_size + cube_normal_buffer_size, arrow_normal.positionSize, arrow_normal.stride); // 0 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 - cube vertices size + offset
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - 6 = 3vertices + 3colors, go to the next vertice
+
+    // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(1, GL_FLOAT, cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal.colorOffset, arrow_normal.colorSize, arrow_normal.stride);     // 1 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 + 16 - offset - cube vertices + (sizeof(GL_FLOAT) * 4 - (3+1 = vertices) (WHEN USE Vertex THE OFFSET IS 16 BECAUSE
+                                                                                                                //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
+
+
+    // ---------- BIND FULL TRANSFORM BUFFER -------------
+    this->fullTransformBuffer.bind();
+
+//    std::cout<<sizeof(float)<<std::endl;
+
+    // SET ATTRIBUTE BUFFER TO INTERPRETER CORRECTLY THE MATRIX, WE NEED TO CREATE THIS BECAUSE THE GPU READ 4 VECTORS NOT 1 4x4 MATRIX
+    // GET THE SHADER VAR ID fullTransform
+    int id4 = this->program->attributeLocation("fullTransform");
+
+    for( int i = 0; i < 4; ++i){
+        this->program->setAttributeBuffer(id4+i, GL_FLOAT, sizeof(GL_FLOAT)*i*4, 4, sizeof(QMatrix4x4));
+        this->program->enableAttributeArray(id4+i);
+        glVertexAttribDivisor(id4+i,1);
+    }
+
+    this->vertexArrayNormalCube.release();
+    }
+    // ---------------------------------------------------
+
+    arrowNormalIndexByteOffset = cubeNormalIndexByteOffset + cube_normal.indexBufferSize();
+
+    // ----------------- SPHERE NORMAL ARRAY ---------------------
+    {
+    // NOW BIND THE ARRAW VERTEX ARRAY AS CURRENT
+    this->vertexArrayNormalSphere.bind();
+    this->vertexBufferObject.bind();
+    this->indexVertexBufferObject.bind();
+
+    //SET 0 TO VERTICES BUFFER
+    this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
+    // SET 1 TO COLORS VALUES
+    this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+
+    // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(0, GL_FLOAT, sphere_normal.positionOffSet + arrow_buffer_size + cube_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size, sphere_normal.positionSize, sphere_normal.stride); // 0 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 - cube vertices size + offset
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - 6 = 3vertices + 3colors, go to the next vertice
+
+    // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(1, GL_FLOAT, cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal.colorOffset, sphere_normal.colorSize, sphere_normal.stride);     // 1 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 + 16 - offset - cube vertices + (sizeof(GL_FLOAT) * 4 - (3+1 = vertices) (WHEN USE Vertex THE OFFSET IS 16 BECAUSE
+                                                                                                                //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
+
+
+    // ---------- BIND FULL TRANSFORM BUFFER -------------
+    this->fullTransformBuffer.bind();
+
+//    std::cout<<sizeof(float)<<std::endl;
+
+    // SET ATTRIBUTE BUFFER TO INTERPRETER CORRECTLY THE MATRIX, WE NEED TO CREATE THIS BECAUSE THE GPU READ 4 VECTORS NOT 1 4x4 MATRIX
+    // GET THE SHADER VAR ID fullTransform
+    int id4 = this->program->attributeLocation("fullTransform");
+
+    for( int i = 0; i < 4; ++i){
+        this->program->setAttributeBuffer(id4+i, GL_FLOAT, sizeof(GL_FLOAT)*i*4, 4, sizeof(QMatrix4x4));
+        this->program->enableAttributeArray(id4+i);
+        glVertexAttribDivisor(id4+i,1);
+    }
+
+    this->vertexArrayNormalCube.release();
+    }
+    // ---------------------------------------------------
+
+    sphereNormalIndexByteOffset = arrowNormalIndexByteOffset + arrow_normal.indexBufferSize();
+
+    // ----------------- PLANE ARRAY ---------------------
+    {
+    // NOW BIND THE ARRAW VERTEX ARRAY AS CURRENT
+    this->vertexArrayPlane.bind();
+    this->vertexBufferObject.bind();
+    this->indexVertexBufferObject.bind();
+
+    //SET 0 TO VERTICES BUFFER
+    this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
+    // SET 1 TO COLORS VALUES
+    this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+
+    this->program->enableAttributeArray(2);
+
+    // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(0, GL_FLOAT, plane->positionOffSet + arrow_buffer_size + cube_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_buffer_size, plane->positionSize, plane->stride); // 0 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 - cube vertices size + offset
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - 6 = 3vertices + 3colors, go to the next vertice
+
+    // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(1, GL_FLOAT, cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_buffer_size + plane->colorOffset, plane->colorSize, plane->stride);     // 1 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 + 16 - offset - cube vertices + (sizeof(GL_FLOAT) * 4 - (3+1 = vertices) (WHEN USE Vertex THE OFFSET IS 16 BECAUSE
+                                                                                                                //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
+
+    this->program->setAttributeBuffer(2, GL_FLOAT, cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_buffer_size + plane->normalOffset, plane->normalSize, plane->stride);     // 1 - id
+
+
+
+
+    // ---------- BIND FULL TRANSFORM BUFFER -------------
+    this->fullTransformBuffer.bind();
+
+//    std::cout<<sizeof(float)<<std::endl;
+
+    // SET ATTRIBUTE BUFFER TO INTERPRETER CORRECTLY THE MATRIX, WE NEED TO CREATE THIS BECAUSE THE GPU READ 4 VECTORS NOT 1 4x4 MATRIX
+    // GET THE SHADER VAR ID fullTransform
+    int id4 = this->program->attributeLocation("fullTransform");
+
+    for( int i = 0; i < 4; ++i){
+        this->program->setAttributeBuffer(id4+i, GL_FLOAT, sizeof(GL_FLOAT)*i*4, 4, sizeof(QMatrix4x4));
+        this->program->enableAttributeArray(id4+i);
+        glVertexAttribDivisor(id4+i,1);
+    }
+
+    this->vertexArrayPlane.release();
+    }
+    // ---------------------------------------------------
+
+    planeIndexByteOffset = sphereNormalIndexByteOffset + sphere_normal.indexBufferSize();
+
+    // ----------------- PLANE NORMAL ARRAY ---------------------
+    {
+    // NOW BIND THE ARRAW VERTEX ARRAY AS CURRENT
+    this->vertexArrayNormalPlane.bind();
+    this->vertexBufferObject.bind();
+    this->indexVertexBufferObject.bind();
+
+    //SET 0 TO VERTICES BUFFER
+    this->program->enableAttributeArray(0);                 // ENABLE id 0, THIS id WILL VERTICES ID
+    // SET 1 TO COLORS VALUES
+    this->program->enableAttributeArray(1);                 // ENABLE id 1, THIS id WILL COLOR ID
+
+    // SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT VERTICE, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(0, GL_FLOAT, plane_normal.positionOffSet + arrow_buffer_size + cube_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_buffer_size + plane_buffer_size, plane_normal.positionSize, plane_normal.stride); // 0 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 - cube vertices size + offset
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - 6 = 3vertices + 3colors, go to the next vertice
+
+    // AGAIN SET BUFFER TYPE, OFFSET, TUPLE SIZE AND STRIDE TO NEXT COLOR, ON HERE WE SPECIFY HOW GLSL READ THE BUFFER DATA
+    // THIS FIRST IS TO READ VERTICES INFO
+    this->program->setAttributeBuffer(1, GL_FLOAT, cube_buffer_size + arrow_buffer_size + sphere_buffer_size + cube_normal_buffer_size + arrow_normal_buffer_size + sphere_normal_index_buffer_size + plane_buffer_size + plane_normal.colorOffset, plane_normal.colorSize, plane_normal.stride);     // 1 - id
+                                                                                                                // GL_FLOAT - Variable type
+                                                                                                                // 768 + 16 - offset - cube vertices + (sizeof(GL_FLOAT) * 4 - (3+1 = vertices) (WHEN USE Vertex THE OFFSET IS 16 BECAUSE
+                                                                                                                //                                                       WE ADD THE 'w' COLOR CHANNEL TO THE CLASS)
+                                                                                                                // 3 - tuple size
+                                                                                                                // 24 - stride (sizeof(GL_FLOAT) * 6) - (6 = 3vertices + 3colors)
+
+
+
+    // ---------- BIND FULL TRANSFORM BUFFER -------------
+    this->fullTransformBuffer.bind();
+
+//    std::cout<<sizeof(float)<<std::endl;
+
+    // SET ATTRIBUTE BUFFER TO INTERPRETER CORRECTLY THE MATRIX, WE NEED TO CREATE THIS BECAUSE THE GPU READ 4 VECTORS NOT 1 4x4 MATRIX
+    // GET THE SHADER VAR ID fullTransform
+    int id4 = this->program->attributeLocation("fullTransform");
+
+    for( int i = 0; i < 4; ++i){
+        this->program->setAttributeBuffer(id4+i, GL_FLOAT, sizeof(GL_FLOAT)*i*4, 4, sizeof(QMatrix4x4));
+        this->program->enableAttributeArray(id4+i);
+        glVertexAttribDivisor(id4+i,1);
+    }
+
+    this->vertexArrayNormalPlane.release();
+    }
+    // ---------------------------------------------------
+
+    planeNormalIndexByteOffset = planeIndexByteOffset + plane->indexBufferSize();
 
 
     // WE CAN CLENUP BECAUSE THE INFO IS ON GPU RAM
@@ -663,6 +1013,8 @@ void OpenGLView::sendToOpenGL3DShader(){
     arrow->cleanUp();
     sphere->cleanUp();
     cube_normal.cleanUp();
+    arrow_normal.cleanUp();
+    sphere_normal.cleanUp();
 
     delete cube;
     delete arrow;
@@ -706,12 +1058,22 @@ void OpenGLView::paintGL(){
 //        this->indexVertexBufferObject.release();
 //        this->vertexArrayObject.release();
 
+        // ------------------------ POINT LIGHT -------------------------
+        QVector3D point_light(0.0f, 3.0f, 0.0f);
+        int point_light_location = this->program->uniformLocation("point_light");
+        this->program->setUniformValue(point_light_location, point_light);
+        // --------------------------------------------------------------
+
         // ----------------------- AMBINTE LIGHT ------------------------
-        QVector4D ambientLight(1.0f, 1.0f, 1.0f, 1.0f);
+        QVector4D ambientLight(0.3, 0.3f, 0.3f, 1.0f);
         int ambient_light_location = this->program->uniformLocation("ambient_light");
         this->program->setUniformValue(ambient_light_location, ambientLight);
 
         // ---------------------------------------------------------------
+
+        // ----------------- MODEL TO WORL ------------------
+
+        // --------------------------------------------------
 
         // ---------------------- CUBE --------------------------
         this->vertexArrayCube.bind();
@@ -719,16 +1081,25 @@ void OpenGLView::paintGL(){
 
         this->fullTransformBuffer.bind();
         this->fullTransformBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-        QMatrix4x4 transform2 = this->fullPerspectiveMatrix(QVector3D(0.0, 0.0, 0.0), 0, QVector3D(1,0,0));
+
+
+        QVector3D translate(10.0, 4.0, 0.0);
+        float angle = -45;
+        QVector3D axis(0,0,1);
+
+        QMatrix4x4 transform2 = this->fullPerspectiveMatrix(translate, angle, axis) ;
+        int model_to_world_location = this->program->uniformLocation("modelToWorld");
+        this->program->setUniformValue(model_to_world_location, this->modelToWorldMatrix(translate, angle, axis));
+
         QMatrix4x4 fullTransform2[] = { transform2 };
 
         this->fullTransformBuffer.allocate(fullTransform2, sizeof(fullTransform2));
-        glDrawElementsInstanced(GL_TRIANGLES, numCubeIndex, GL_UNSIGNED_SHORT, 0, 1);
+//        glDrawElementsInstanced(GL_TRIANGLES, numCubeIndex, GL_UNSIGNED_SHORT, 0, 1);
 
             // NORMAL CUBE DRAW
             this->vertexArrayNormalCube.bind();
             this->indexVertexBufferObject.bind();
-            glDrawElements(GL_LINES, numCubeNormalIndex, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexByteOffset);
+//            glDrawElements(GL_LINES, numCubeNormalIndex, GL_UNSIGNED_SHORT, (void*)cubeNormalIndexByteOffset);
 
 
 //        this->fullTransformBuffer.release();
@@ -751,7 +1122,12 @@ void OpenGLView::paintGL(){
 
         this->fullTransformBuffer.allocate(fullTransform3, sizeof(fullTransform3));
 
-        glDrawElementsInstanced(GL_TRIANGLES, numArrowIndex, GL_UNSIGNED_SHORT, (void*)arrowIndexByteOffset, 1);
+//        glDrawElementsInstanced(GL_TRIANGLES, numArrowIndex, GL_UNSIGNED_SHORT, (void*)arrowIndexByteOffset, 1);
+
+            // NORMAL CUBE DRAW
+            this->vertexArrayNormalArrow.bind();
+            this->indexVertexBufferObject.bind();
+//            glDrawElements(GL_LINES, numArrowNormalIndex, GL_UNSIGNED_SHORT, (void*)arrowNormalIndexByteOffset);
 
 //        this->fullTransformBuffer.release();
 //        this->indexVertexBufferObject.release();
@@ -764,12 +1140,46 @@ void OpenGLView::paintGL(){
 
         this->fullTransformBuffer.bind();
         this->fullTransformBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
-        QMatrix4x4 transform4 = this->fullPerspectiveMatrix(QVector3D(-5.0, 0.0, 0.0), 0, QVector3D(1,0,0));
+        QMatrix4x4 transform4 = this->fullPerspectiveMatrix(QVector3D(0.0, 0.0, 0.0), 0, QVector3D(1,0,0));
         QMatrix4x4 fullTransform4[]  = { transform4 };
 
         this->fullTransformBuffer.allocate(fullTransform4, sizeof(fullTransform4));
 
-        glDrawElementsInstanced(GL_TRIANGLES, numSphereIndex, GL_UNSIGNED_SHORT, (void*)sphereIndexByteOffset, 1);
+//        glDrawElementsInstanced(GL_TRIANGLES, numSphereIndex, GL_UNSIGNED_SHORT, (void*)sphereIndexByteOffset, 1);
+
+            // NORMAL CUBE DRAW
+            this->vertexArrayNormalSphere.bind();
+            this->indexVertexBufferObject.bind();
+//            glDrawElements(GL_LINES, numSphereNormalIndex, GL_UNSIGNED_SHORT, (void*)sphereNormalIndexByteOffset);
+
+//        this->fullTransformBuffer.release();
+//        this->indexVertexBufferObject.release();
+//        this->vertexArraySphere.release();
+        // ---------------------------------------------------------
+
+        // ------------------------ PlANE -------------------------
+        this->vertexArrayPlane.bind();
+        this->indexVertexBufferObject.bind();
+
+        this->fullTransformBuffer.bind();
+        this->fullTransformBuffer.setUsagePattern(QOpenGLBuffer::DynamicDraw);
+
+        translate = QVector3D(0.0, 0.0, 0.0);
+        angle = 0;
+        axis = QVector3D(0,0,0);
+
+        this->program->setUniformValue(model_to_world_location, this->modelToWorldMatrix(translate, angle, axis));
+        QMatrix4x4 transform8 = this->fullPerspectiveMatrix(translate, angle, axis);
+        QMatrix4x4 fullTransform8[]  = { transform8 };
+
+        this->fullTransformBuffer.allocate(fullTransform8, sizeof(fullTransform8));
+
+        glDrawElementsInstanced(GL_TRIANGLES, numPlaneIndex, GL_UNSIGNED_SHORT, (void*)planeIndexByteOffset, 1);
+
+            // NORMAL CUBE DRAW
+            this->vertexArrayNormalPlane.bind();
+            this->indexVertexBufferObject.bind();
+//            glDrawElements(GL_LINES, numPlaneNormalIndex, GL_UNSIGNED_SHORT, (void*)planeNormalIndexByteOffset);
 
 //        this->fullTransformBuffer.release();
 //        this->indexVertexBufferObject.release();
@@ -856,6 +1266,17 @@ QMatrix4x4 OpenGLView::fullOrthoMatrix(const QVector3D& translate, const float& 
 //    QMatrix4x4 view = camera->getModelToView();
 
     return projection_ortho * transform;
+}
+
+QMatrix4x4 OpenGLView::modelToWorldMatrix(const QVector3D& translate ,const float& angle, const QVector3D& axis) const{
+    QMatrix4x4 transform;
+
+    transform.setToIdentity();
+
+    transform.translate(translate);
+    transform.rotate(angle, axis);
+
+    return transform;
 }
 
 // MOUSE EVENTS
@@ -946,4 +1367,34 @@ void OpenGLView::printDebug(QString to_print){
 
 void OpenGLView::printDebug(int to_print){
     qDebug()<<to_print;
+}
+
+// FUNCTION USED TO DEBUG
+void OpenGLView::calc(ShaderData* data){
+
+    QVector3D light(0.0f, 1.0f, 0.0f);
+
+    for(int i = 0; i<data->numVertices; ++i){
+        Vector3D p(data->vertices[i].getPosition());
+        Vector3D n(data->vertices[i].getNormal());
+
+        QVector3D Qt_p(p.getX(), p.getY(), p.getZ());
+        QVector3D Qt_n(n.getX(), n.getY(), n.getZ());
+
+        Qt_n.normalize();
+
+        QVector3D lightVector(light - Qt_p);
+        lightVector.normalize();
+        std::cout<<"Color: " << data->vertices[i].getColor();
+        std::cout<<"Position: " << p;
+        std::cout<<"Light Vector: " << lightVector.x() << " " << lightVector.y() << " " << lightVector.z()<<std::endl;
+        std::cout<<"Normal: " << n;
+
+        float result = QVector3D::dotProduct(lightVector, Qt_n);
+
+        std::cout<<"Result: "<<result<<std::endl<<std::endl;
+
+    }
+
+
 }

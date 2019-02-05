@@ -32,8 +32,10 @@ public:
 
     static const int positionSize = 3;
     static const int colorSize = 4;
+    static const int normalSize = 3;
     static int positionOffSet();
     static int colorOffSet();
+    static int normalOffSet();
     static int stride();
 
     friend std::ostream& operator<<(std::ostream& os,const Vertex& v);
@@ -86,18 +88,13 @@ inline void Vertex::setColorAlpha(float w){
 }
 
 inline void Vertex::setNormal(float x, float y, float z){
-//    std::cout << this->position.getX() + x << " ";
-//    std::cout << this->position.getY() + y << " ";
-//    std::cout << this->position.getZ() + z << std::endl;
-    this->normal.setX(this->position.getX() + x);
-    this->normal.setY(this->position.getY() + y);
-    this->normal.setZ(this->position.getZ() + z);
-//    std::cout << this->normal.getX() << " ";
-//    std::cout << this->normal.getY() << " ";
-//    std::cout << this->normal.getZ() << std::endl;
+
+    this->normal.setX(x);
+    this->normal.setY(y);
+    this->normal.setZ(z);
 }
 inline void Vertex::setNormal(const Vector3D& normal){
-    this->normal = this->getPosition() + normal;
+    this->normal = normal;
 }
 
 inline int Vertex::positionOffSet(){
@@ -106,6 +103,9 @@ inline int Vertex::positionOffSet(){
 inline int Vertex::colorOffSet(){
     return offsetof(Vertex, color);
 }
+inline int Vertex::normalOffSet(){
+    return offsetof(Vertex, normal);
+}
 inline int Vertex::stride(){
     return sizeof (Vertex);
 }
@@ -113,6 +113,7 @@ inline int Vertex::stride(){
 inline std::ostream& operator<<(std::ostream& os,const Vertex& v){
     os << "Position:"<< v.position << "\n";
     os << "Color:"<< v.color << "\n";
+    os << "Normal:"<< v.normal << "\n";
     return os;
 }
 

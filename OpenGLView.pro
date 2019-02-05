@@ -30,7 +30,8 @@ SOURCES += \
     Primitivies/shaderData.cpp \
     Primitivies/shaderGenerator.cpp \
     Primitivies/triangleShader.cpp \
-    Primitivies/sphereShader.cpp
+    Primitivies/sphereShader.cpp \
+    Primitivies/planeShader.cpp
 
 HEADERS += \
         openglmainwindow.h \
@@ -52,15 +53,16 @@ HEADERS += \
     Primitivies/gridShader.h \
     Primitivies/shaderData.h \
     Primitivies/triangleShader.h \
-    Primitivies/sphereShader.h
+    Primitivies/sphereShader.h \
+    Primitivies/planeShader.h
 
 FORMS += \
         openglmainwindow.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+## Default rules for deployment.
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
     resources.qrc

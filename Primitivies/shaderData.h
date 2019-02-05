@@ -16,8 +16,10 @@ public:
     int numIndex;
     int positionSize;
     int colorSize;
+    int normalSize;
     int positionOffSet;
     int colorOffset;
+    int normalOffset;
     int stride;
 
     ShaderData();

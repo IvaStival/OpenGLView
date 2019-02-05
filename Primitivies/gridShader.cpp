@@ -2,7 +2,7 @@
 
 GridShader::GridShader()
 {
-    Vector3D color(0.2f, 0.2f, 0.2f);
+    Vector3D color(0.1f, 0.1f, 0.1f);
     int size = 10;
     Vertex verts[] = {
         Vertex(-size, 0.0f, 0.0f, color),
@@ -204,10 +204,12 @@ GridShader::GridShader()
 
     this->positionSize = Vertex::positionSize;
     this->colorSize = Vertex::colorSize;
+    this->normalSize = Vertex::normalSize;
     this->stride = Vertex::stride();
 
     this->positionOffSet = Vertex::positionOffSet();
     this->colorOffset = Vertex::colorOffSet();
+    this->normalOffset = Vertex::normalOffSet();
 
 }
 

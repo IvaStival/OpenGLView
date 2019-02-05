@@ -97,10 +97,12 @@ ArrowShader::ArrowShader(){
 
     this->positionSize = Vertex::positionSize;
     this->colorSize = Vertex::colorSize;
+    this->normalSize = Vertex::normalSize;
     this->stride = Vertex::stride();
 
     this->positionOffSet = Vertex::positionOffSet();
     this->colorOffset = Vertex::colorOffSet();
+    this->normalOffset = Vertex::normalOffSet();
     this->normal();
 
 

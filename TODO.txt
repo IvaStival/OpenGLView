@@ -1,4 +1,4 @@
-glBufferSubData() - funcao usada para adicionar os vertices após ter alocado memória. Tentar entender como funciona no Qt via classes
+glBufferSubData() - funcao usada para adicionar os vertices após ter alocado memória. Tentar entender como funciona no Qt via classes - OK
 
 Objeto:
 scale -
@@ -12,6 +12,12 @@ Zoom - Ok
 Rotate Around - Ok
 Perspective - Ok
 Ortho - Ok
+
+Luz -
+Normal - OK
+Ambiente - OK
+Difusa -
+Especular - 
 
 
 Axis:
@@ -33,4 +39,4 @@ Adicionar objetos a cena dinamicamente
 DOC:
 - Terminar topico sobre camera; - Ok
 - Falar sobre desenhar objetos diferentes - ex: Axis (linhas x, y e z) e Objetos; -Ok
-- Desenhar Grid
+- Desenhar Grid - OK

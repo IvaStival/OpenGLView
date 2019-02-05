@@ -15,13 +15,13 @@
 #include <vector>
 #include <QMatrix4x4>
 
-#include "Math/perspectivematrix.h"
 #include "Primitivies/triangleShader.h"
 #include "Primitivies/cubeShader.h"
 #include "Primitivies/sphereShader.h"
 #include "Primitivies/axisShader.h"
 #include "Primitivies/gridShader.h"
 #include "Primitivies/arrowshader.h"
+#include "Primitivies/planeShader.h"
 #include "Primitivies/vertex.h"
 #include "Math/perspectivematrix.h"
 #include "Math/camera.h"
@@ -56,9 +56,13 @@ private:
 
     // ---------- IMPLEMENTATION OF THE TWO GEOMETRIES ON THE SAME BUFFER ------------
     QOpenGLVertexArrayObject vertexArrayCube;
-    QOpenGLVertexArrayObject vertexArrayNormalCube;
     QOpenGLVertexArrayObject vertexArrayArrow;
     QOpenGLVertexArrayObject vertexArraySphere;
+    QOpenGLVertexArrayObject vertexArrayPlane;
+    QOpenGLVertexArrayObject vertexArrayNormalCube;
+    QOpenGLVertexArrayObject vertexArrayNormalArrow;
+    QOpenGLVertexArrayObject vertexArrayNormalSphere;
+    QOpenGLVertexArrayObject vertexArrayNormalPlane;
     // -------------------------------------------------------------------------------
 
 
@@ -75,14 +79,28 @@ private:
     int numCubeVertices;
     int numArrowVertices;
     int numSphereVertices;
-    int numCubeIndex;
+    int numPlaneVertices;
     int numCubeNormalVertices;
-    int numCubeNormalIndex;
+    int numArrowNormalVertices;
+    int numSphereNormalVertices;
+    int numPlaneNormalVertices;
+
+    int numCubeIndex;
     int numArrowIndex;
     int numSphereIndex;
+    int numPlaneIndex;
+    int numCubeNormalIndex;
+    int numArrowNormalIndex;
+    int numSphereNormalIndex;
+    int numPlaneNormalIndex;
+
     int arrowIndexByteOffset;
     int sphereIndexByteOffset;
+    int planeIndexByteOffset;
     int cubeNormalIndexByteOffset;
+    int arrowNormalIndexByteOffset;
+    int sphereNormalIndexByteOffset;
+    int planeNormalIndexByteOffset;
 
     // -------------------------------------------------------------------------------
 
@@ -108,8 +126,12 @@ public:
     void sendToOpenGLAxisShader();
     void sendToOpenGLGridShader();
     void sendToOpenGL3DShader();
+//    void sendToOpenGLPlaneShader();
     QMatrix4x4 fullPerspectiveMatrix(const QVector3D& translate, const float& angle, const QVector3D& axis) const;
     QMatrix4x4 fullOrthoMatrix(const QVector3D& translate, const float& angle, const QVector3D& axis) const;
+    QMatrix4x4 modelToWorldMatrix(const QVector3D& translate, const float& angle, const QVector3D& axis) const;
+
+    void calc(ShaderData*);
 
 };
 
